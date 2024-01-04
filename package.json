@@ -2,7 +2,10 @@
   "name": "@org/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build:css": "tailwindcss build styles.css -o output.css"
+  }
+  ,
   "private": true,
   "dependencies": {
     "@swc/helpers": "~0.5.2",

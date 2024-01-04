@@ -59,10 +59,7 @@ export function SignIn(props: HelloProps) {
   return (
     <div
       className={`min-h-screen flex items-center justify-center bg-cover ${styles.page}`}
-      style={{
-        backgroundImage:
-          'url("https://www.shvoong.co.il/wp-content/uploads/2022/01/shutterstock_1124541077.jpg")',
-      }}
+    
     >
       <div className={styles.container}>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
