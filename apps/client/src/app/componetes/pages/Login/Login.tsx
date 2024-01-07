@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAtom } from "jotai";
 import { atom } from "jotai";
-import tRPCclient from "../../utils/tRPC";
+import tRPCclient from "../../../utils/tRPC";
 
 interface FormDataSignIn {
   email: string;
