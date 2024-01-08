@@ -2,6 +2,8 @@ export type City = {
     name: string;
     latitude: number;
     longitude: number;
+    weather?:string
+    temp?:string
   };
   
   const majorCities: City[] = [

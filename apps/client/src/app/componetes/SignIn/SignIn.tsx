@@ -1,41 +1,39 @@
 import styles from './signIn.module.css';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, FieldValues } from 'react-hook-form';
 import tRPCclient from '../../utils/tRPC';
 
 export interface HelloProps {}
 
-interface FormDataSignIn {
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-}
 
 export function SignIn(props: HelloProps) {
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<FormDataSignIn>();
+  const { register, handleSubmit } = useForm();
 
   const hello = tRPCclient.users.SignIn.mutate
 
 
-  const handleSignIn = async (data: FormDataSignIn) => {
+  const handleSignIn = async (data: FieldValues) => {
     try {
       if (data.password !== data.passwordConfirmation) {
+        console.log(data.password ,data.passwordConfirmation);
+        
         console.error("הסיסמה ואימות הסיסמה אינם תואמים");
-        return ;
+        return ("הסיסמה ואימות הסיסמה אינם תואמים") ;
       }
 
       if (!isValidEmail(data.email) || !isValidPassword(data.password)) {
         console.error("אימייל או סיסמה לא תקינים");
-        return;
+        return ("אימייל או סיסמה לא תקינים");
       }
 
       const isEmailExists = await checkEmailExistence(data.email);
       if (isEmailExists) {
         console.error("האימייל כבר קיים במערכת");
-        return;
+        return ("האימייל כבר קיים במערכת");
       }
       const test = await hello({ email: data.email, password: data.password });
+      navigate('/Map')
       console.log(test);
       
     } catch (error) {
@@ -57,8 +55,7 @@ export function SignIn(props: HelloProps) {
 
   // פונקציה לבדיקת קיום האימייל במערכת
   const checkEmailExistence = async (email: string): Promise<boolean> => {
-    // כאן יש להוסיף קריאה לשרת/מסד נתונים לבדיקת קיום האימייל
-    // או להשתמש באפשרות של אקסיוס לבדיקה
+    
     return false;
   };
 
@@ -108,16 +105,10 @@ export function SignIn(props: HelloProps) {
                   >
                     password
                   </label>
-                  {/* <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                   forget password
-                  </a>
-                </div> */}
                 </div>
                 <div className="mt-2">
                   <input
                     id="password"
-                    // name="password"
                     type="password"
                     autoComplete="current-password"
                     required
@@ -128,18 +119,18 @@ export function SignIn(props: HelloProps) {
               </div>
               <div className="flex items-center justify-between">
                 <label
-                  htmlFor="password"
+                  htmlFor="passwordConfirmation"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
                   Password Confirmation
                 </label>
                 <input
-                  id="confirmPassword"
+                  id="passwordConfirmation"
                   // name="password"
                   type="password"
                   autoComplete="current-password"
                   required
-                  {...register('password')}
+                  {...register('passwordConfirmation')}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -149,7 +140,7 @@ export function SignIn(props: HelloProps) {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  login
+                   Sign In
                 </button>
               </div>
             </form>

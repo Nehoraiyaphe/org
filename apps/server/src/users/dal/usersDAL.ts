@@ -1,37 +1,44 @@
 import { compare, hash } from 'bcrypt';
 import Users from '../../model/usersModel';
-import users from '../../model/usersModel';
 import { UserTipe } from '../../types/type';
 
 export const userSignIn = async (user: UserTipe) => {
   try {
     const existingUser = await Users.findOne({ where: { email: user.email } });
     if (existingUser) {
-      console.error('Invalid creadentials');
-      throw new Error('Invalid creadentials');
+      console.error('User with this email already exists');
+      throw new Error('User with this email already exists');
     }
-    const newUser = await users.create(user);
+
+    // Hash the user's password before storing it
     user.password = await hash(user.password, 10);
+    const newUser = await Users.create(user);
+
     return newUser;
   } catch (error) {
-    console.log(error);
-    return error;
+    console.error(error);
+    throw error;
   }
 };
 
 export const userLogin = async ({ email, password }: UserTipe) => {
   try {
-    const user = await Users.findOne({ where: { email: email } });
+    const user = await Users.findOne({ where: { email } });
     if (!user) {
-      console.error('Invalid creadentials');
-      throw new Error('Invalid creadentials');
+      console.error('User not found');
+      throw new Error('Invalid credentials');
     }
-    const comper = await compare(password, user.password);
-    if (!comper) throw new Error('Invalid password');
-    return user
-    
+
+    const isPasswordValid = await compare(password, user.password);
+
+    if (!isPasswordValid) {
+      console.error('Invalid password');
+      throw new Error('Invalid credentials');
+    }
+
+    return user;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
