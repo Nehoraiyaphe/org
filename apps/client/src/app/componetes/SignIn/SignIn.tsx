@@ -1,8 +1,7 @@
-import styles from "./signIn.module.css";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-// import axios from 'axios';
-// import { error } from 'console';
+import styles from './signIn.module.css';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import tRPCclient from '../../utils/tRPC';
 
 export interface HelloProps {}
 
@@ -16,11 +15,14 @@ export function SignIn(props: HelloProps) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<FormDataSignIn>();
 
+  const hello = tRPCclient.users.SignIn.mutate
+
+
   const handleSignIn = async (data: FormDataSignIn) => {
     try {
       if (data.password !== data.passwordConfirmation) {
         console.error("הסיסמה ואימות הסיסמה אינם תואמים");
-        return;
+        return ;
       }
 
       if (!isValidEmail(data.email) || !isValidPassword(data.password)) {
@@ -33,8 +35,12 @@ export function SignIn(props: HelloProps) {
         console.error("האימייל כבר קיים במערכת");
         return;
       }
+      const test = await hello({ email: data.email, password: data.password });
+      console.log(test);
+      
     } catch (error) {
-      console.error("שגיאה במהלך התחברות:", error);
+      console.error('שגיאה במהלך התחברות:', error);
+      
     }
   };
 
@@ -68,7 +74,7 @@ export function SignIn(props: HelloProps) {
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              התחברות לחשבונך
+              הרשמה לאתר של מזג אויר
             </h2>
           </div>
 
@@ -88,7 +94,7 @@ export function SignIn(props: HelloProps) {
                     type="email"
                     autoComplete="email"
                     required
-                    {...register("email")}
+                    {...register('email')}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -115,7 +121,7 @@ export function SignIn(props: HelloProps) {
                     type="password"
                     autoComplete="current-password"
                     required
-                    {...register("password")}
+                    {...register('password')}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -133,7 +139,7 @@ export function SignIn(props: HelloProps) {
                   type="password"
                   autoComplete="current-password"
                   required
-                  {...register("password")}
+                  {...register('password')}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>

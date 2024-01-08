@@ -1,8 +1,7 @@
 import styles from "./Login.module.css";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useAtom } from "jotai";
-import { atom } from "jotai";
+import { useAtom, atom } from "jotai";
 import tRPCclient from "../../utils/tRPC";
 
 interface FormDataSignIn {
@@ -18,13 +17,14 @@ export function Login() {
   const [errorMessage, setErrorMessage] = useAtom(errorMessageAtom);
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<FormDataSignIn>();
-  const hello = tRPCclient.users.hello.query
+  // const hello = tRPCclient.users.hello.query
 
   const handleSignInClick = async () => {
-    console.log("test");
-    const res = await hello()
-    console.log(res); 
+    // console.log("test");
     navigate("/SignIn");
+    // const res = await hello()
+    
+    
   };
 
   const handleSignIn = async (data: FormDataSignIn) => {

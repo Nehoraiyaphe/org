@@ -1,4 +1,4 @@
-import { publicProcedure, router } from '../trpc/initTrpc';
+import { router } from '../trpc/initTrpc';
 import usersRouter from '../users/routes/usersRouter';
  
 const appRouter = router({
