@@ -39,7 +39,7 @@ export function Login(props: HelloProps) {
         navigate('/Map');
       }
     } catch (error) {
-      console.error('שגיאה במהלך התחברות:', error);
+      // console.error('שגיאה במהלך התחברות:', error);
       setLoginStatus('error');
       setErrorMessage('שגיאה במהלך התחברות');
     }

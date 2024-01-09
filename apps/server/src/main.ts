@@ -1,10 +1,9 @@
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import cors from 'cors';
 import appRouter from './router/appRouter';
-``;
 import connectionDB from './db/dbConnection';
 import { createUsersTable } from './model/usersModel';
-import { error } from 'console';
+
 
 const httpServer = createHTTPServer({
   router: appRouter,

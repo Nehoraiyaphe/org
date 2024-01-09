@@ -14,7 +14,7 @@ export default function Home() {
   console.log([selectedCity?.latitude, selectedCity?.longitude]);
 
   const fecthWeather = async (city: City) => {
-    debugger;
+    // debugger;
     const API_KEY = 'c10279da29d184f8bcd89f84981669f9';
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.name}&appid=${API_KEY}&units=metric`;
     try {

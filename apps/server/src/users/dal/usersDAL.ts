@@ -1,8 +1,8 @@
 import { compare, hash } from 'bcrypt';
 import Users from '../../model/usersModel';
-import { UserTipe } from '../../types/type';
+import { UserType } from '../../types/type';
 
-export const userSignIn = async (user: UserTipe) => {
+export const userSignIn = async (user: UserType) => {
   try {
     const existingUser = await Users.findOne({ where: { email: user.email } });
     if (existingUser) {
@@ -10,18 +10,18 @@ export const userSignIn = async (user: UserTipe) => {
       throw new Error('User with this email already exists');
     }
 
-    // Hash the user's password before storing it
     user.password = await hash(user.password, 10);
     const newUser = await Users.create(user);
 
     return newUser;
+
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
 
-export const userLogin = async ({ email, password }: UserTipe) => {
+export const userLogin = async ({ email, password }: UserType) => {
   try {
     const user = await Users.findOne({ where: { email } });
     if (!user) {
@@ -37,6 +37,7 @@ export const userLogin = async ({ email, password }: UserTipe) => {
     }
 
     return user;
+    
   } catch (error) {
     console.error(error);
     throw error;
