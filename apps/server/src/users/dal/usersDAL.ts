@@ -14,7 +14,7 @@ export const userSignIn = async (user: UserType) => {
     const newUser = await Users.create(user);
 
     return newUser;
-
+    
   } catch (error) {
     console.error(error);
     throw error;
@@ -37,7 +37,6 @@ export const userLogin = async ({ email, password }: UserType) => {
     }
 
     return user;
-    
   } catch (error) {
     console.error(error);
     throw error;

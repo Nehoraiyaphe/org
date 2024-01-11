@@ -36,6 +36,7 @@ export function Login(props: HelloProps) {
       } else {
         console.log('התחברות מוצלחת');
         setLoginStatus('success');
+        localStorage.setItem('isLogin','true')
         navigate('/Map');
       }
     } catch (error) {

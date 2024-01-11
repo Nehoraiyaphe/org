@@ -5,59 +5,55 @@ import tRPCclient from '../../utils/tRPC';
 
 export interface HelloProps {}
 
-
 export function SignIn(props: HelloProps) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  const hello = tRPCclient.users.SignIn.mutate
-
+  const hello = tRPCclient.users.SignIn.mutate;
 
   const handleSignIn = async (data: FieldValues) => {
     try {
       if (data.password !== data.passwordConfirmation) {
-        console.log(data.password ,data.passwordConfirmation);
-        
-        console.error("הסיסמה ואימות הסיסמה אינם תואמים");
-        return ("הסיסמה ואימות הסיסמה אינם תואמים") ;
+        console.log(data.password, data.passwordConfirmation);
+
+        console.error('הסיסמה ואימות הסיסמה אינם תואמים');
+        return 'הסיסמה ואימות הסיסמה אינם תואמים';
       }
 
-      if (!isValidEmail(data.email) || !isValidPassword(data.password)) {
-        console.error("אימייל או סיסמה לא תקינים");
-        return ("אימייל או סיסמה לא תקינים");
-      }
+      //   if (!isValidEmail(data.email) || !isValidPassword(data.password)) {
+      //     console.error("אימייל או סיסמה לא תקינים");
+      //     return ("אימייל או סיסמה לא תקינים");
+      //   }
 
-      const isEmailExists = await checkEmailExistence(data.email);
-      if (isEmailExists) {
-        console.error("האימייל כבר קיים במערכת");
-        return ("האימייל כבר קיים במערכת");
-      }
+      //   const isEmailExists = await checkEmailExistence(data.email);
+      //   if (isEmailExists) {
+      //     console.error("האימייל כבר קיים במערכת");
+      //     return ("האימייל כבר קיים במערכת");
+      //   }
       const test = await hello({ email: data.email, password: data.password });
-      navigate('/Map')
+      navigate('/Map');
       console.log(test);
-      
     } catch (error) {
       console.error('שגיאה במהלך התחברות:', error);
-      
     }
   };
 
-  const isValidEmail = (email: string): boolean => {
-    // כאן יש להוסיף בדיקה לפי כללי התקן של אימייל
-    return true;
-  };
+  // const isValidEmail = (email: string): boolean => {
+  //   // כאן יש להוסיף בדיקה לפי כללי התקן של אימייל
+  //   return true;
+  // };
 
-  // פונקציה לבדיקת תקינות סיסמה
-  const isValidPassword = (password: string): boolean => {
-    // כאן יש להוסיף בדיקה לפי כללי התקן של סיסמה
-    return true;
-  };
+  // // פונקציה לבדיקת תקינות סיסמה
+  // const isValidPassword = (password: string): boolean => {
+  //   // כאן יש להוסיף בדיקה לפי כללי התקן של סיסמה
+  //   return true;
+  // };
 
-  // פונקציה לבדיקת קיום האימייל במערכת
-  const checkEmailExistence = async (email: string): Promise<boolean> => {
-    
-    return false;
-  };
+  // // פונקציה לבדיקת קיום האימייל במערכת
+  // const checkEmailExistence = async (email: string): Promise<boolean> => {
+
+  //   return false;
+  // };
 
   return (
     <div
@@ -140,7 +136,7 @@ export function SignIn(props: HelloProps) {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                   Sign In
+                  Sign In
                 </button>
               </div>
             </form>

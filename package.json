@@ -5,6 +5,7 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
     "@swc/helpers": "~0.5.2",
     "@trpc/client": "^10.45.0",
     "@trpc/server": "^10.45.0",
