@@ -26,7 +26,6 @@ export function Login(props: HelloProps) {
     const hello = tRPCclient.users.login.query;
 
     try {
-
       const user = await hello({ email: data.email, password: data.password });
 
       if (!user) {
@@ -36,7 +35,7 @@ export function Login(props: HelloProps) {
       } else {
         console.log('התחברות מוצלחת');
         setLoginStatus('success');
-        localStorage.setItem('isLogin','true')
+        localStorage.setItem('isLogin', 'true');
         navigate('/Map');
       }
     } catch (error) {
@@ -53,7 +52,8 @@ export function Login(props: HelloProps) {
           'url("https://www.shvoong.co.il/wp-content/uploads/2022/01/shutterstock_1124541077.jpg")',
       }}
     >
-      <div className="bg-white p-8 rounded-md w-full max-w-md">
+      
+      <div className="bg-white p-8 rounded-md w-full max-w-md">;
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
           התחברות לאתר מזג אויר
         </h2>

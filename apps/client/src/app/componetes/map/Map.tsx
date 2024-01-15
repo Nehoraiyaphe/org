@@ -4,20 +4,24 @@ import { useEffect, useState } from 'react';
 import majorCities, { City } from '../../data/city';
 import Point from 'ol/geom/Point';
 import { RMap, ROSM, RLayerVector, RFeature, RStyle } from 'rlayers';
+import { RLayerTileWebGL, ROSMWebGL, RControl } from 'rlayers';
 import { useNavigate } from 'react-router-dom';
 import locationIcon from './location.svg';
 
+// import { format } from 'path';
 
 export default function Home() {
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
-  const [weatherData, setWeatherData] = useState<string[]>([]);
+  const [weatherData, setweatherData] = useState<string[]>([]);
 
   const navigate = useNavigate();
 
   const API_KEY = 'c10279da29d184f8bcd89f84981669f9';
 
+  const newApi = '35b62bee115f4b8982a9bd45679dd4f3';
+
   const fecthWeather = async (city: City) => {
-    // debugger;
+
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.name}&exclude=current,minutely,hourly,alerts&units=metric&appid=${API_KEY}&units=metric`;
     try {
       const respons = await fetch(url);
@@ -36,19 +40,26 @@ export default function Home() {
     }
   };
 
-  const getDataFor7days = async (lat: any, lon: any, api: any) => {
-    debugger;
+  const getDatafor7days = async (lat: any, lon: any, api: any) => {
+    // debugger;
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
 
-    const wheater = [];
-    let url = `https://api.tomorrow.io/v4/weather/forecast?location=${lat},${lon}&apikey=81JnAbamqn6nGT7FwPWCPkeYPcyT4hCJ`;
+    const formattedEndDate = `${year}-${month}-${day}`;
+    console.log(formattedEndDate);
+    const weather = [];
+    let url = `https://api.weatherbit.io/v2.0/history/daily?lat=${lat}&lon=${lon}&start_date=2024-01-01&end_date=${formattedEndDate}&key=35b62bee115f4b8982a9bd45679dd4f3`;
     try {
-      const res = await fetch(url);
-      const data = await res.json();
-      const weatherDescription = data.weather[0].description;
-      const time = data.timelines.daily;
-      data.map((da: any) => {
-        console.log('data', da.timelines);
-      });
+      let res = await fetch(url);
+
+      let data = await res.json();
+      // weather.push(data.timelines);
+      // setweatherData(weather);
+      // for (const item of weather) {
+      //   setweatherData(item.daily);
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -57,15 +68,11 @@ export default function Home() {
   const handelSelectCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const city = majorCities.find((c) => c.name === event.target.value);
     setSelectedCity(city ?? null);
-
     if (city) {
       fecthWeather(city);
+      getDatafor7days(selectedCity?.longitude, selectedCity?.latitude, API_KEY);
     }
   };
-
-  useEffect(() => {
-    getDataFor7days(selectedCity?.longitude, selectedCity?.latitude, API_KEY);
-  }, [selectedCity?.longitude, selectedCity?.latitude]);
 
   useEffect(() => {
     const isLogin = localStorage.getItem('isLogin');
@@ -92,7 +99,6 @@ export default function Home() {
               <ROSM />
 
               <RLayerVector zIndex={10}>
-                
                 <RStyle.RStyle>
                   <RStyle.RIcon
                     scale={0.1}
@@ -109,20 +115,38 @@ export default function Home() {
                       ])
                     )
                   }
-                  // onClick={(wheater)}
+                  onClick={() => {
+                    getDatafor7days(1, 1, 'sss');
+                  }}
                 />
               </RLayerVector>
+              <RControl.RLayers>
+                <ROSMWebGL properties={{ label: 'OSM' }} />
+                <RLayerTileWebGL
+                  properties={{ label: 'OpenTopo' }}
+                  url="https://{a-c}.tile.opentopomap.org/{z}/{x}/{y}.png"
+                  attributions="Kartendaten: © OpenStreetMap-Mitwirkende, SRTM | Kartendarstellung: © OpenTopoMap (CC-BY-SA)"
+                />
+              </RControl.RLayers>
             </RMap>
           ) : (
             <RMap
               width={'100%'}
               height={'268%'}
               initial={{
-                center: [0, 0],
+                center: [0,0],
                 zoom: 1,
               }}
             >
               <ROSM />
+              <RControl.RLayers>
+                <ROSMWebGL properties={{ label: 'OSM' }} />
+                <RLayerTileWebGL
+                  properties={{ label: 'OpenTopo' }}
+                  url="https://{a-c}.tile.opentopomap.org/{z}/{x}/{y}.png"
+                  attributions="Kartendaten: © OpenStreetMap-Mitwirkende, SRTM | Kartendarstellung: © OpenTopoMap (CC-BY-SA)"
+                />
+              </RControl.RLayers>
             </RMap>
           )}
         </div>
@@ -151,6 +175,7 @@ export default function Home() {
           <p className="text-lg">Temp: {selectedCity?.temp}</p>
           <p className="text-lg">Feels Like: {selectedCity?.feels_like}</p>
         </div>
+        
       </div>
     </div>
   );
