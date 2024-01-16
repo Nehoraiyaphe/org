@@ -3,12 +3,24 @@ import cors from 'cors';
 import appRouter from './router/appRouter';
 import connectionDB from './db/dbConnection';
 import { createUsersTable } from './model/usersModel';
-
+import jwt from 'jsonwebtoken'
 
 const httpServer = createHTTPServer({
   router: appRouter,
   middleware: cors(),
 });
+
+
+export const generateToken = (emailAmdPass) => {
+  const token = jwt.sign(emailAmdPass, 'secretKey038dsjhc@!$#');
+  console.log(token);
+return token
+};
+
+export const verifyToken = (token:string) => {
+  const emailAmdPass = jwt.verify(token, 'secretKey038dsjhc@!$#')
+  return emailAmdPass
+}
 
 httpServer.listen(3000);
 

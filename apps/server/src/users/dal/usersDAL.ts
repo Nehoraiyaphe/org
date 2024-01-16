@@ -1,6 +1,7 @@
 import { compare, hash } from 'bcrypt';
 import Users from '../../model/usersModel';
 import { UserType } from '../../types/type';
+import { generateToken } from '../../main';
 
 export const userSignIn = async (user: UserType) => {
   try {
@@ -35,8 +36,9 @@ export const userLogin = async ({ email, password }: UserType) => {
       console.error('Invalid password');
       throw new Error('Invalid credentials');
     }
-
-    return user;
+    const token = generateToken({email: user.email, password: user.password})
+    return token;
+    
   } catch (error) {
     console.error(error);
     throw error;

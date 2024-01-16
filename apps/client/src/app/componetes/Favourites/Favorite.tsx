@@ -1,12 +1,18 @@
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function Favorite() {
-const navigate = useNavigate();
+export default function Favorite(cardId: any) {
+  const [cards, setCards] = useState([]);
+  const navigate = useNavigate();
 
-const BackToMap = async () => {
+  const Delete = () => {
+    const updatedCards = cards.filter((card) => card !== cardId);
+    setCards(updatedCards);
+  };
+
+  const BackToMap = async () => {
     navigate('/Map');
   };
-}
 
   return (
     <div className="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
@@ -31,19 +37,19 @@ const BackToMap = async () => {
         <button
           className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
           type="button"
+          onClick={Delete}
         >
-          Read More
+          Delete
         </button>
       </div>
-      <div>
+      <div></div>
       <button
-          className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-          type="button"
-          onClick={BackToMap}
-        >
-        BackToMap
-        </button>
-      </div>
+        className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
+        type="button"
+        onClick={BackToMap}
+      >
+        Back To Map
+      </button>
     </div>
   );
-  
+}

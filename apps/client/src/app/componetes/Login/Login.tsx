@@ -27,6 +27,7 @@ export function Login(props: HelloProps) {
 
     try {
       const user = await hello({ email: data.email, password: data.password });
+      localStorage.set('TOKEN', user);
 
       if (!user) {
         console.log('התחברות נכשלה');

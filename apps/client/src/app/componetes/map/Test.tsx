@@ -1,40 +1,93 @@
-import { Line } from 'react-chartjs-2';
-
-const YourComponent = () => {
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June'];
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: 'My First dataset',
-        backgroundColor: 'hsl(252, 82.9%, 67.8%)',
-        borderColor: 'hsl(252, 82.9%, 67.8%)',
-        data: [0, 10, 5, 2, 20, 30, 45],
+import {
+  Card,
+  CardBody,
+} from "@material-tailwind/react";
+import Chart from "react-apexcharts";
+ 
+const chartConfig = {
+  series: [
+    {
+      name: "Sales",
+      data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+    },
+  ],
+  options: {
+    chart: {
+      toolbar: {
+        show: false,
       },
-    ],
-  };
-
-  const options = {}; // You can customize options here
-
-  // const selectedCity = /* your logic for selected city */
-  // const majorCities = /* your list of major cities */
-
-  // const handelSelectCity = /* your logic for handling city selection */
-  return (
-    <div className="flex flex-col md:flex-row">
-      <div className="map w-full md:w-1/2"></div>
-      <div className="flex flex-col w-full md:w-1/2 p-4">
-        <div className="flex items-center justify-end mb-4">
-          {/* ... (your city selection dropdown) */}
-        </div>
-      </div>
-      {/* Line Chart */}
-      <div className="shadow-lg rounded-lg overflow-hidden">
-        <div className="py-3 px-5 bg-gray-50">Line chart</div>
-        <Line data={data} options={options} />
-      </div>
-    </div>
-  );
+    },
+    title: {
+      show: "",
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    colors: ["#020617"],
+    stroke: {
+      lineCap: "round",
+      curve: "smooth",
+    },
+    markers: {
+      size: 0,
+    },
+    xaxis: {
+      axisTicks: {
+        show: false,
+      },
+      axisBorder: {
+        show: false,
+      },
+      labels: {
+        style: {
+          colors: "#616161",
+          fontSize: "12px",
+          fontFamily: "inherit",
+          fontWeight: 400,
+        },
+      },
+      categories: ["אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"],
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: "#616161",
+          fontSize: "12px",
+          fontFamily: "inherit",
+          fontWeight: 400,
+        },
+      },
+    },
+    grid: {
+      show: true,
+      borderColor: "#dddddd",
+      strokeDashArray: 5,
+      xaxis: {
+        lines: {
+          show: true,
+        },
+      },
+      padding: {
+        top: 5,
+        right: 20,
+      },
+    },
+    fill: {
+      opacity: 0.8,
+    },
+    tooltip: {
+      theme: "dark",
+    },
+  },
 };
 
-export default YourComponent;
+const A = () => {
+  return (
+    <Card>
+      <CardBody className="px-2 pb-0">
+        <Chart type="line" height={240} series={chartConfig.series} options={chartConfig}  />
+      </CardBody>
+    </Card>
+  );
+} 
+export default A 
