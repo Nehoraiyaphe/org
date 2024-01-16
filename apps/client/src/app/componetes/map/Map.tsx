@@ -82,6 +82,11 @@ export default function Home() {
     }
   };
 
+  const ChoiceCity = async (city:City) => {
+
+    
+  } 
+
   const isLogin = localStorage.getItem('isLogin');
   if (!isLogin) return <Navigate replace to={'/'} />;
 
@@ -93,7 +98,7 @@ export default function Home() {
             <RMap
               key={selectedCity.name}
               width={'100%'}
-              height={'229%'}
+              height={'700px'}
               initial={{
                 center: fromLonLat([
                   selectedCity.longitude,
@@ -145,7 +150,7 @@ export default function Home() {
           ) : (
             <RMap
               width={'100%'}
-              height={'229%'}
+              height={'700px'}
               initial={{
                 center: [0, 0],
                 zoom: 1,
@@ -180,6 +185,7 @@ export default function Home() {
           <button
             type="button"
             className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-blue-100 border text-black hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 mr-9"
+            // onClick={}
           >
             choice a city
           </button>
@@ -193,7 +199,7 @@ export default function Home() {
               Select a City
             </option>
 
-            {majorCities.map((city: City, index: number) => (
+            {majorCities?.map((city: City, index: number) => (
               <option key={index} value={city.name}>
                 {city.name}
               </option>
@@ -210,7 +216,7 @@ export default function Home() {
           <p className="text-lg">Temp: {selectedCity?.temp}</p>
           <p className="text-lg">Feels Like: {selectedCity?.feels_like}</p>
         </div>
-        {weatherData.map((data: any, index) => (
+        {weatherData?.map((data: any, index) => (
           <div
             className="temp bg-blue-100 border border-blue-300 rounded-md p-2"
             key={index}
