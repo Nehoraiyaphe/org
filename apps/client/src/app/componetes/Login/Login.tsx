@@ -27,7 +27,8 @@ export function Login(props: HelloProps) {
 
     try {
       const user = await hello({ email: data.email, password: data.password });
-      localStorage.set('TOKEN', user);
+      localStorage.setItem('TOKEN', user);
+
 
       if (!user) {
         console.log('התחברות נכשלה');
@@ -35,6 +36,7 @@ export function Login(props: HelloProps) {
         setErrorMessage('הסיסמה או המייל לא נכונים');
       } else {
         console.log('התחברות מוצלחת');
+        localStorage.setItem('emailUser',data.email)
         setLoginStatus('success');
         localStorage.setItem('isLogin', 'true');
         navigate('/Map');

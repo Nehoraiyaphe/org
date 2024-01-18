@@ -1,6 +1,6 @@
 import { fromLonLat } from 'ol/proj';
 import 'ol/ol.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import majorCities, { City } from '../../data/city';
 import Point from 'ol/geom/Point';
 import { RMap, ROSM, RLayerVector, RFeature, RStyle } from 'rlayers';
@@ -8,11 +8,14 @@ import { RLayerTileWebGL, ROSMWebGL, RControl } from 'rlayers';
 import { Navigate, useNavigate } from 'react-router-dom';
 import locationIcon from './location.svg';
 import RLayerStadia from 'rlayers/layer/RLayerStadia';
+import { useMutation } from '@apollo/client';
+import { ADD_FAVORITE } from '../../graphqlClinet/mutatitn/Mutatitn';
 
 export default function Home() {
   const [selectedCity, setSelectedCity] = useState<City>();
   const [weatherData, setWeatherData] = useState<string[]>([]);
   const navigate = useNavigate();
+  const [addFavorite, {data, loading, error}] = useMutation(ADD_FAVORITE)
 
   const FavouritesClick = async () => {
     navigate('/Favorite');
@@ -51,7 +54,7 @@ export default function Home() {
     console.log(formattedEndDate);
 
     const startDate = new Date(currentDate);
-    startDate.setDate(currentDate.getDate() - 7);
+    startDate.setDate(currentDate.getDate() - 6);
     const formattedStartDate = formatDate(startDate);
 
     const weather = [];
@@ -79,16 +82,15 @@ export default function Home() {
     setSelectedCity(city);
     if (city) {
       fetchWeather(city);
+      console.log(city);
+      
     }
   };
 
-  const ChoiceCity = async (city:City) => {
-
-    
-  } 
 
   const isLogin = localStorage.getItem('isLogin');
   if (!isLogin) return <Navigate replace to={'/'} />;
+
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -185,7 +187,12 @@ export default function Home() {
           <button
             type="button"
             className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-blue-100 border text-black hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 mr-9"
-            // onClick={}
+            onClick={async ()=> {
+              await addFavorite({variables: {
+                input: {
+                  email: localStorage.getItem('emailUser') ,  location: selectedCity?.name }
+              }})
+            }}
           >
             choice a city
           </button>

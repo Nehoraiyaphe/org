@@ -1,7 +1,7 @@
 import express from 'express';
 import postgraphile  from 'postgraphile'
 import cors from "cors"
-// import func from './helper/setinterval';
+
 
 const app = express();
 app.use(cors())
@@ -11,8 +11,9 @@ app.use (
         process.env.URL_LOCAL_POSTGRAS as string ,"public" ,   {
             watchPg:true,
             graphiql: true,
-            enhanceGraphiql: true
-
+            enhanceGraphiql: true,
+            jwtPgTypeIdentifier: 'public.token',
+            jwtSecret: 'secret_key_%$%&*#@764khfg'
         }
         )
 );

@@ -1,20 +1,45 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GET_FAVORITE } from '../../graphqlClinet/mutatitn/Mutatitn';
+import { useMutation } from '@apollo/client';
+
 
 export default function Favorite(cardId: any) {
-  const [cards, setCards] = useState([]);
-  const navigate = useNavigate();
+  // const [cards, setCards] = useState([]);
 
-  // const Delete = () => {
-  //   const updatedCards = cards.filter((card) => card !== cardId);
-  //   setCards(updatedCards);
-  // };
+  const [getFavorite, { data, loading, error }] = useMutation(GET_FAVORITE);
+
+
+  useEffect(() => {
+    fetchData();
+  }, []); 
+
+  const fetchData = async () => {
+    try {
+      const result = await getFavorite({
+        variables: {
+          input: {
+            email: localStorage.getItem('emailUser')
+          }
+        }
+      });
+      console.log(result.data);
+    } catch (error) {
+      console.error('Error fetching favorite data:', error);
+    }
+  };
+
+
+
+  const navigate = useNavigate();
 
   const BackToMap = async () => {
     navigate('/Map');
   };
 
+
   return (
+    
     <div className="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
       <div className="relative h-56 mx-4 -mt-6 overflow-hidden text-white shadow-lg bg-clip-border rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40">
         <img
@@ -25,7 +50,9 @@ export default function Favorite(cardId: any) {
       </div>
       <div className="p-6">
         <h5 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-          UI/UX Review Check
+          
+        {data && data.getFavorite && data.getFavorite.strings}
+
         </h5>
         <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
           The place is close to Barceloneta Beach and bus stop just 2 min by

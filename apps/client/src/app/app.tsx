@@ -4,8 +4,20 @@ import SignIn from "./componetes/SignIn/SignIn";
 import Home from "./componetes/map/Map"
 import A from "./componetes/map/Test";
 import Favorite from "./componetes/Favourites/Favorite";
+import { useQuery, gql } from '@apollo/client';
+
 
 export function App() {
+  const GET_LOCATIONS = gql`
+  query GetLocations {
+    locations {
+      id
+      name
+      description
+      photo
+    }
+  }
+`;
   return (
     <div>
       <Routes>
