@@ -1,27 +1,27 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { GET_FAVORITE } from '../../graphqlClinet/mutatitn/Mutatitn';
 import { useMutation } from '@apollo/client';
-
+import majorCities, { City } from '../../data/city';
 
 export default function Favorite(cardId: any) {
   // const [cards, setCards] = useState([]);
 
   const [getFavorite, { data, loading, error }] = useMutation(GET_FAVORITE);
-
+  const [selectedCity, setSelectedCity] = useState<City>();
 
   useEffect(() => {
     fetchData();
-  }, []); 
+  }, []);
 
   const fetchData = async () => {
     try {
       const result = await getFavorite({
         variables: {
           input: {
-            email: localStorage.getItem('emailUser')
-          }
-        }
+            email: localStorage.getItem('emailUser'),
+          },
+        },
       });
       console.log(result.data);
     } catch (error) {
@@ -29,54 +29,44 @@ export default function Favorite(cardId: any) {
     }
   };
 
-
-
-  const navigate = useNavigate();
-
-  const BackToMap = async () => {
-    navigate('/Map');
-  };
-
-
   return (
-    
-    <div className="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
-      <div className="relative h-56 mx-4 -mt-6 overflow-hidden text-white shadow-lg bg-clip-border rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40">
-        <img
-          src="https://www.shvoong.co.il/wp-content/uploads/2022/01/shutterstock_1124541077.jpg"
-          alt="card-image"
-          className="w-full h-full object-cover"
-        />
-      </div>
-      <div className="p-6">
-        <h5 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-          
-        {data && data.getFavorite && data.getFavorite.strings}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {data &&
+        data.getFavorite &&
+        data.getFavorite.strings.map((cityName: string, index: number) => (
+          <div>
+            <div
+              key={index}
+              className="relative flex flex-col mt-6 mr-4 text-gray-700 bg-blue shadow-md bg-clip-border rounded-xl p-9"
+            >
+              <img
+                src="https://www.shvoong.co.il/wp-content/uploads/2022/01/shutterstock_1124541077.jpg"
+                alt="card-image"
+                className="w-full h-full object-cover"
+              />
 
-        </h5>
-        <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-          The place is close to Barceloneta Beach and bus stop just 2 min by
-          walk and near to "Naviglio" where you can enjoy the main night life in
-          Barcelona.
-        </p>
-      </div>
-      <div className="p-6 pt-0">
-        <button
-          className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-          type="button"
-          // onClick={Delete}
-        >
-          Delete
-        </button>
-      </div>
-      <div></div>
-      <button
-        className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
-        type="button"
-        onClick={BackToMap}
-      >
-        Back To Map
-      </button>
+              <div className="p-6">
+                <h5 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                  {cityName}
+                </h5>
+                <Link
+                  to="/Map"
+                  className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  Back To Map
+                </Link>
+                
+                <button
+                  type="button"
+                  // onClick={}
+                  className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
     </div>
   );
 }

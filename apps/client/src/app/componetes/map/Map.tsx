@@ -15,7 +15,7 @@ export default function Home() {
   const [selectedCity, setSelectedCity] = useState<City>();
   const [weatherData, setWeatherData] = useState<string[]>([]);
   const navigate = useNavigate();
-  const [addFavorite, {data, loading, error}] = useMutation(ADD_FAVORITE)
+  const [addFavorite, { data, loading, error }] = useMutation(ADD_FAVORITE);
 
   const FavouritesClick = async () => {
     navigate('/Favorite');
@@ -83,14 +83,11 @@ export default function Home() {
     if (city) {
       fetchWeather(city);
       console.log(city);
-      
     }
   };
 
-
   const isLogin = localStorage.getItem('isLogin');
   if (!isLogin) return <Navigate replace to={'/'} />;
-
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -111,14 +108,14 @@ export default function Home() {
             >
               <ROSM />
 
-              <RLayerVector zIndex={10}>
+              <RLayerVector zIndex={10} >
                 <RStyle.RStyle>
                   <RStyle.RIcon
                     scale={0.1}
                     src={locationIcon}
                     anchor={[0.5, 0.8]}
                   />
-                </RStyle.RStyle>
+                </RStyle.RStyle >
                 <RFeature
                   geometry={
                     new Point(
@@ -137,7 +134,7 @@ export default function Home() {
                   }}
                 />
               </RLayerVector>
-              <RControl.RLayers>
+              <RControl.RLayers className='mt-1 mr-2 absolute top-0 right-0'>
                 <ROSMWebGL properties={{ label: 'OSM' }} />
                 <RLayerTileWebGL
                   properties={{ label: 'OpenTopo' }}
@@ -159,7 +156,7 @@ export default function Home() {
               }}
             >
               <ROSM />
-              <RControl.RLayers>
+              <RControl.RLayers className='mt-1 mr-1 absolute top-0 right-0'>
                 <ROSMWebGL properties={{ label: 'OSM' }} />
                 <RLayerTileWebGL
                   properties={{ label: 'OpenTopo' }}
@@ -183,19 +180,24 @@ export default function Home() {
           >
             Favourites
           </button>
-
-          <button
-            type="button"
-            className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-blue-100 border text-black hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 mr-9"
-            onClick={async ()=> {
-              await addFavorite({variables: {
-                input: {
-                  email: localStorage.getItem('emailUser') ,  location: selectedCity?.name }
-              }})
-            }}
-          >
-            choice a city
-          </button>
+          {selectedCity && (
+            <button
+              type="button"
+              className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-blue-100 border text-black hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 mr-9"
+              onClick={async () => {
+                await addFavorite({
+                  variables: {
+                    input: {
+                      email: localStorage.getItem('emailUser'),
+                      location: selectedCity?.name,
+                    },
+                  },
+                });
+              }}
+            >
+              choice a city
+            </button>
+          )}
 
           <select
             onChange={handelSelectCity}
@@ -220,7 +222,7 @@ export default function Home() {
           </h3>
           <h2 className="text-2xl font-bold">City: {selectedCity?.name}</h2>
           <p className="text-lg">Weather: {selectedCity?.weather}</p>
-          <p className="text-lg">Temp: {selectedCity?.temp}</p>
+          <p className="text-lg">Temp: {selectedCity?.temp}°C</p>
           <p className="text-lg">Feels Like: {selectedCity?.feels_like}</p>
         </div>
         {weatherData?.map((data: any, index) => (
@@ -228,7 +230,7 @@ export default function Home() {
             className="temp bg-blue-100 border border-blue-300 rounded-md p-2"
             key={index}
           >
-            <p className="text-lg">Temp: {data?.temp}</p>
+            <p className="text-lg">Temp: {data?.temp}°C</p>
             <p className="text-lg">Date: {data?.datetime}</p>
           </div>
         ))}
