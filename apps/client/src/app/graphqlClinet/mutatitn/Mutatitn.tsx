@@ -15,3 +15,12 @@ mutation MyMutation($input:  GetFavoriteInput!) {
     strings
   }
 }`
+
+
+export const DELETE_FAVORITE = gql`
+mutation MyMutation($input: RemoveLocationInput!) {
+  removeLocation(input: $input) {
+    string
+  }
+}
+`

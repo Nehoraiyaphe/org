@@ -26,6 +26,19 @@
 -- END;
 -- $$ LANGUAGE plpgsql;
 
+-- CREATE OR REPLACE FUNCTION public.remove_location(email_param text, location_to_remove text)
+-- RETURNS text AS $$
+-- BEGIN
+--   UPDATE public.users 
+--   SET perfer_location = array_remove(perfer_location, location_to_remove)
+--   WHERE email = email_param;
+
+--   RETURN 'Location removed successfully';
+-- EXCEPTION
+--   WHEN others THEN
+--     RETURN 'Error removing location';
+-- END;
+-- $$ LANGUAGE plpgsql;
 
 
 
