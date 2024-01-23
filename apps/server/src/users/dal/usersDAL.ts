@@ -44,3 +44,10 @@ export const userLogin = async ({ email, password }: UserType) => {
     throw error;
   }
 };
+
+// export const deleteFavourite = async (user: UserType) => {
+//   try{
+//     const favourite = await
+//   }
+  
+// }

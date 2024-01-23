@@ -1,18 +1,17 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  DELETE_FAVORITE,
-  GET_FAVORITE,
-} from '../../graphqlClinet/mutatitn/Mutatitn';
+import { DELETE_FAVORITE,GET_FAVORITE } from '../../graphqlClinet/mutatitn/Mutatitn';
 import { useMutation } from '@apollo/client';
+// import useHooks from '../hooks/useHook';
 
-export default function Favorite(cardId: any) {
-  // const [cards, setCards] = useState([]);
+
+
+export default  function Favorite(cardId: any) {
+//   const  {temp}  = await useHooks(selectedCity)
+// console.log(temp);
 
   const [getFavorite, { data }] = useMutation(GET_FAVORITE);
   const [deleteFavorite, { data: deletedData }] = useMutation(DELETE_FAVORITE);
-
-  console.log();
 
   useEffect(() => {
     fetchData();
@@ -30,6 +29,7 @@ export default function Favorite(cardId: any) {
       console.log(result.data);
     } catch (error) {
       console.error('Error fetching favorite data:', error);
+      throw new Error("Error fetching favorite data");
     }
   };
 
@@ -39,21 +39,22 @@ export default function Favorite(cardId: any) {
         variables: {
           input: {
             emailParam: localStorage.getItem('emailUser'),
-            locationToRemove: city
+            locationToRemove: city,
           },
         },
       });
-
       console.log(deleteResult.data);
       fetchData();
     } catch (error) {
       console.error('Error deleting favorite data:');
       console.error('Error details:', error);
+      throw new Error("Error details");
     }
   };
+  
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
       {data &&
         data.getFavorite &&
         data.getFavorite.strings.map((cityName: string, index: number) => (
@@ -79,7 +80,7 @@ export default function Favorite(cardId: any) {
 
                   <button
                     type="button"
-                    onClick={()=> deleteData(cityName)}
+                    onClick={() => deleteData(cityName)}
                     className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Delete

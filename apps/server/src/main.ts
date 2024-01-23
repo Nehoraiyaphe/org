@@ -4,10 +4,12 @@ import appRouter from './router/appRouter';
 import connectionDB from './db/dbConnection';
 import { createUsersTable } from './model/usersModel';
 import jwt from 'jsonwebtoken'
+import { createContext } from './trpc/initTrpc';
 
 const httpServer = createHTTPServer({
   router: appRouter,
   middleware: cors(),
+  createContext,
 });
 
 

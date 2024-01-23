@@ -10,12 +10,17 @@ import locationIcon from './location.svg';
 import RLayerStadia from 'rlayers/layer/RLayerStadia';
 import { useMutation } from '@apollo/client';
 import { ADD_FAVORITE } from '../../graphqlClinet/mutatitn/Mutatitn';
+// import useHooks from '../hooks/useHook';
+
+
 
 export default function Home() {
   const [selectedCity, setSelectedCity] = useState<City>();
   const [weatherData, setWeatherData] = useState<string[]>([]);
   const navigate = useNavigate();
   const [addFavorite, { data, loading, error }] = useMutation(ADD_FAVORITE);
+  // const  temp1  = useHooks(selectedCity)
+
 
   const FavouritesClick = async () => {
     navigate('/Favorite');
@@ -31,7 +36,8 @@ export default function Home() {
       const respons = await fetch(url);
       const data = await respons.json();
       const weatherDescription = data.weather[0].description;
-      const temp = data.main.temp;
+      // const temp = await temp1;
+      const temp = data.main.temp
       const feelsLike = data.main.feels_like;
       setSelectedCity({
         ...city,

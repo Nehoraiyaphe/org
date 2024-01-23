@@ -1,12 +1,13 @@
 import { DataTypes, Model } from 'sequelize';
 import { dataBase } from '../db/dbConnection';
 
-interface UserAttributes {
+export interface UserAttributes {
   email: string;
   password: string;
+
 }
 
-interface UserModel extends Model<UserAttributes>, UserAttributes {}
+interface UserModel extends Model<UserAttributes  >, UserAttributes {}
 
 
 const Users = dataBase.define<UserModel>('users', {
@@ -35,3 +36,15 @@ export const createUsersTable = async () => {
 };
 
 export default Users;
+
+
+// <
+//   Model<
+//     UserAttributes ,
+//     UserAttributes & {
+//       createdAt: string;
+//       updatedAt: string;
+//       perfer_location: string[];
+//     }
+//   >
+// >

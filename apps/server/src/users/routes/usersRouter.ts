@@ -1,4 +1,4 @@
-import { publicProcedure, router } from '../../trpc/initTrpc';
+import { privateProcedure, publicProcedure, router } from '../../trpc/initTrpc';
 import { userLogin, userSignIn } from '../dal/usersDAL';
 import z from 'zod';
 
@@ -19,7 +19,15 @@ const usersRouter = router({
     const { email, password } = ops.input;
     const logInUser = await userLogin({ email, password });
     return logInUser;
+  }),
+  
+  delete: privateProcedure
+  .mutation(()=>{
+
   })
+
+
+
 });
 
 export default usersRouter;
