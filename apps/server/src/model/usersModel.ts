@@ -4,25 +4,31 @@ import { dataBase } from '../db/dbConnection';
 export interface UserAttributes {
   email: string;
   password: string;
-
 }
 
-interface UserModel extends Model<UserAttributes  >, UserAttributes {}
-
-
-const Users = dataBase.define<UserModel>('users', {
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
+const Users = dataBase.define<
+  Model<UserAttributes & { perfer_location: string[] }, UserAttributes>
+>(
+  'users',
+  {
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    perfer_location: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+    },
   },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-}, {
-  tableName: 'users', 
-});
+  {
+    tableName: 'users',
+  }
+);
 
 export const createUsersTable = async () => {
   try {
@@ -36,8 +42,6 @@ export const createUsersTable = async () => {
 };
 
 export default Users;
-
-
 // <
 //   Model<
 //     UserAttributes ,

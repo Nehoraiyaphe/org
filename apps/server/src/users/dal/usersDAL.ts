@@ -15,7 +15,6 @@ export const userSignIn = async (user: UserType) => {
     const newUser = await Users.create(user);
 
     return newUser;
-    
   } catch (error) {
     console.error(error);
     throw error;
@@ -30,24 +29,30 @@ export const userLogin = async ({ email, password }: UserType) => {
       throw new Error('Invalid credentials');
     }
 
-    const isPasswordValid = await compare(password, user.password);
+    const isPasswordValid =  await compare(password, user.dataValues.password);
 
     if (!isPasswordValid) {
       console.error('Invalid password');
       throw new Error('Invalid credentials');
     }
-    const token = generateToken({email: user.email, password: user.password})
+    const token = generateToken({ email: user.dataValues.email, password: user.dataValues.password });
     return token;
-    
   } catch (error) {
     console.error(error);
-    throw error;
+    throw new Error ('error');
   }
 };
 
-// export const deleteFavourite = async (user: UserType) => {
-//   try{
-//     const favourite = await
-//   }
-  
-// }
+export const deleteFavorite = async ( email:string, locationToRemove:string ) => {
+  try {
+    const userInformation = await Users.findOne({
+      where: { email: email },
+    });
+    const filteredLocation = userInformation.dataValues.perfer_location.filter((location) => location !== locationToRemove);
+    
+    const updating = await userInformation.update({perfer_location: filteredLocation});
+    return updating;
+  } catch {
+    throw new Error('felid to delete');
+  }
+};

@@ -1,9 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import Users from '../model/usersModel';
-import {UserAttributes} from '../model/usersModel'
-
-
+import Users, { UserAttributes } from '../model/usersModel';
 
 
 export const verified = async ({ ctx, next }) => {
@@ -12,8 +9,6 @@ export const verified = async ({ ctx, next }) => {
 
 
 
-
-  
   if (!token) throw new TRPCError({ code: 'UNAUTHORIZED' });
 
   const tokenObj = jwt.verify(
@@ -21,11 +16,15 @@ export const verified = async ({ ctx, next }) => {
     'secretKey038dsjhc@!$#'
   ) as JwtPayload;
 
+// console.log(tokenObj);
+
 
     const user = (await Users.findOne({
       where: { email: tokenObj.email },
-      raw: true,
-    }))
+      raw: true
+    })) as unknown as UserAttributes
+
+    
     if (!user) throw new TRPCError({ code: 'UNAUTHORIZED' });
 
     if (user.password !== tokenObj.password)

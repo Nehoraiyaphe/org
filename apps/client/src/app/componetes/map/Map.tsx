@@ -19,6 +19,7 @@ export default function Home() {
   const [weatherData, setWeatherData] = useState<string[]>([]);
   const navigate = useNavigate();
   const [addFavorite, { data, loading, error }] = useMutation(ADD_FAVORITE);
+  console.log(data)
   // const  temp1  = useHooks(selectedCity)
 
 

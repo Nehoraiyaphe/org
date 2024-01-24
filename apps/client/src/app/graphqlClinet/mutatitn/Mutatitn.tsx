@@ -17,10 +17,10 @@ mutation MyMutation($input:  GetFavoriteInput!) {
 }`
 
 
-export const DELETE_FAVORITE = gql`
-mutation MyMutation($input: RemoveLocationInput!) {
-  removeLocation(input: $input) {
-    string
-  }
-}
-`
+// export const DELETE_FAVORITE = gql`
+// mutation MyMutation($input: RemoveLocationInput!) {
+//   removeLocation(input: $input) {
+//     string
+//   }
+// }
+// `

@@ -1,60 +1,75 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { DELETE_FAVORITE,GET_FAVORITE } from '../../graphqlClinet/mutatitn/Mutatitn';
+import { Link, Navigate } from 'react-router-dom';
+import {
+  // DELETE_FAVORITE,
+  GET_FAVORITE,
+} from '../../graphqlClinet/mutatitn/Mutatitn';
 import { useMutation } from '@apollo/client';
+import tRPCclient from '../../utils/tRPC';
+// import city from '../../data/city';
 // import useHooks from '../hooks/useHook';
 
-
-
-export default  function Favorite(cardId: any) {
-//   const  {temp}  = await useHooks(selectedCity)
-// console.log(temp);
+function Favorite(cardId: any) {
+  //   const  {temp}  = await useHooks(selectedCity)
+  // console.log(temp);
+  // const [deleteFavorite, { data: deletedData }] = useMutation(DELETE_FAVORITE);
 
   const [getFavorite, { data }] = useMutation(GET_FAVORITE);
-  const [deleteFavorite, { data: deletedData }] = useMutation(DELETE_FAVORITE);
+  const deleteLocation = tRPCclient.users.deleteFavorite.mutate;
+  console.log('data', data);
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const result = await getFavorite({
-        variables: {
-          input: {
-            email: localStorage.getItem('emailUser'),
-          },
-        },
-      });
-      console.log(result.data);
-    } catch (error) {
-      console.error('Error fetching favorite data:', error);
-      throw new Error("Error fetching favorite data");
-    }
-  };
-
-  const deleteData = async (city: string) => {
-    try {
-      const deleteResult = await deleteFavorite({
-        variables: {
-          input: {
-            emailParam: localStorage.getItem('emailUser'),
-            locationToRemove: city,
-          },
-        },
-      });
-      console.log(deleteResult.data);
-      fetchData();
-    } catch (error) {
-      console.error('Error deleting favorite data:');
-      console.error('Error details:', error);
-      throw new Error("Error details");
-    }
-  };
   
+  const fetchData = async () => {
+    await getFavorite({
+      variables: {
+        input: {
+          email: localStorage.getItem('emailUser'),
+        },
+      },
+    });
+  };
+  const deleteData = async (city: string) => {
+      const test = await deleteLocation({
+        token: String(localStorage.getItem('TOKEN')),
+        locationToRemove: city,
+      }).then(()=>{
+        fetchData();
+      })
+
+  };
+
+  const isLogin = localStorage.getItem('isLogin');
+  if (!isLogin) return <Navigate replace to={'/'} />;
+
+  // const deleteData = async (city: string) => {
+  //   try {
+  // const deleteResult = await deleteFavorite({
+  //   variables: {
+  //     input: {
+  //       emailParam: localStorage.getItem('emailUser'),
+  //       locationToRemove: city,
+  // },
+  // },
+  //   }
+  //   console.log(deleteResult.data);
+  //   fetchData();
+  // }catch (error) {
+  //   console.error('Error deleting favorite data:');
+  //   console.error('Error details:', error);
+  //   throw new Error('Error details');
+  // }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 
+    "  style={{
+      backgroundImage: `url('https://www.ynet.co.il/PicServer2/24012010/3227612/shutterstock_67854454_wa.jpg')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    }}>
       {data &&
         data.getFavorite &&
         data.getFavorite.strings.map((cityName: string, index: number) => (
@@ -93,3 +108,4 @@ export default  function Favorite(cardId: any) {
     </div>
   );
 }
+export default Favorite;
